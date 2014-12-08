@@ -1,12 +1,4 @@
-var rotation = function (elementid){
-    var angle = 0;
-    setInterval(function(){
-          angle+=3;
-         $(elementid).rotate(angle);
-    },50);
 }
-// rotation("#google");
-
 
 
 toss_threshold = 800;
@@ -120,9 +112,6 @@ interact('.draggable')
             }
 
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
-console.log (event);
-console.log (event.interaction.inertiaStatus.active);
-console.log (event.interaction.inertiaStatus.i);
                 window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
                 event.interaction.inertiaStatus.active = false;
                 event.interaction.stop();

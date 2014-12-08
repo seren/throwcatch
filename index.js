@@ -1,3 +1,6 @@
+function angle_from_xy (x, y) {
+    angle = 180 * Math.atan2(y, x) / Math.PI;
+    return angle;
 }
 
 
@@ -80,9 +83,7 @@ interact('.draggable')
                 y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
             // translate the element
-            target.style.webkitTransform =
-            target.style.transform =
-                'translate(' + x + 'px, ' + y + 'px)';
+            style = 'translate(' + x + 'px, ' + y + 'px)';
 
             // update the position attributes
             target.setAttribute('data-x', x);
@@ -110,6 +111,17 @@ interact('.draggable')
             } else {
                 document.documentElement.style.cursor = 'move';
             }
+
+            if ( toss || (event.interaction.inertiaStatus.active = false) ) {
+                style = style + " rotate(" +
+                    ( angle_from_xy( velocity_history.dx_average(), velocity_history.dy_average() ) + 90 ) +
+                    "deg)";
+            }
+
+
+            target.style.webkitTransform =
+            target.style.transform =
+                style;
 
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
                 window.cancelAnimationFrame(event.interaction.inertiaStatus.i);

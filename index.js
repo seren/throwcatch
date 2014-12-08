@@ -112,7 +112,7 @@ interact('.draggable')
                 document.documentElement.style.cursor = 'move';
             }
 
-            if ( toss || (event.interaction.inertiaStatus.active = false) ) {
+            if ( toss || event.interaction.inertiaStatus.active ) {
                 style = style + " rotate(" +
                     ( angle_from_xy( velocity_history.dx_average(), velocity_history.dy_average() ) + 90 ) +
                     "deg)";
@@ -123,10 +123,11 @@ interact('.draggable')
             target.style.transform =
                 style;
 
+            // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame (there's an Interaction without a target being inertially processed)
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
-                window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
-                event.interaction.inertiaStatus.active = false;
                 event.interaction.stop();
+                event.interaction.inertiaStatus.active = false;
+                window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
                 turn_icon_to_marker(event.target);
             }
 

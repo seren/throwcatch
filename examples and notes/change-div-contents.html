@@ -1,0 +1,14 @@
+<html>
+<script type="text/javascript" src="jquery-2.1.1.js"></script>
+<body>
+
+<div id="readout"><span>Stuff goes here</span></div>
+
+<script type="text/javascript">
+    console.log($( '#readout span' ));
+    console.log($( '#readout' ).html());
+    $( '#readout span' ).html('test1');
+    $( '#readout span' ).text('test2');
+</script>
+
+</body>

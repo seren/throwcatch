@@ -1,0 +1,76 @@
+
+
+
+tossable objects, like draggable
+
+  when mouse released, calculate velocity and angle (similar to inertia code)
+if above threshold
+	animate icon off screen,
+	generate scaled icon object at release point or edge, with type: marker
+
+
+
+
+<script type="text/javascript"><!--
+
+$(document).ready(function() {
+  console.log( "test" )
+  console.log( $( "#img" ) )
+  $( "img" ).rotate({
+     bind:
+       {
+          mouseover : function() {
+              $(this).rotate({animateTo:180})
+          },
+          mouseout : function() {
+              $(this).rotate({animateTo:0})
+          }
+       }
+
+  });
+});
+
+ -->
+</script>
+// Define a plain object
+var foo = { foo: "bar", hello: "world" };
+// Pass it to the jQuery function
+var $foo = $( foo );
+// Test accessing property values
+var test1 = $foo.prop( "foo" ); // bar
+// Test setting property values
+$foo.prop( "foo", "foobar" );
+var test2 = $foo.prop( "foo" ); // foobar
+// Test using .data() as summarized above
+$foo.data( "keyName", "someValue" );
+console.log( $foo ); // will now contain a jQuery{randomNumber} property
+// Test binding an event name and triggering
+$foo.on( "eventName", function () {
+console.log( "eventName was called" );
+});
+$foo.trigger( "eventName" ); // Logs "eventName was called"
+
+
+
+
+<img src="https://www.google.com/images/srpr/logo3w.png" id="google" style="margin:100px 100px;">
+
+
+<script type="text/javascript"><!--
+var angle = 0;
+var timer = {};
+obj = $("#google");
+obj
+    .mouseenter(function() {
+      timer = setInterval(function(){
+            angle+=20;
+           obj.rotate(angle);
+      },50);
+    })
+    .mouseleave(function() {
+        clearInterval(timer);
+        angle = 0;
+        obj.rotate(angle);
+    });
+-->
+</script>

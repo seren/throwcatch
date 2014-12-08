@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>mouseenter demo</title>
+<style>
+div.out {
+width: 40%;
+height: 120px;
+margin: 0 15px;
+background-color: #d6edfc;
+float: left;
+}
+div.in {
+width: 60%;
+height: 60%;
+background-color: #fc0;
+margin: 10px auto;
+}
+p {
+line-height: 1em;
+margin: 0;
+padding: 0;
+}
+</style>
+
+<script src="jquery-2.1.1.js"></script>
+</head>
+<body>
+
+
+<img src="https://www.google.com/images/srpr/logo3w.png" class="bob" id="google" style="margin:100px 100px;">
+
+
+<div class="out overout">
+<p>move your mouse</p>
+<div class="in overout"><p>move your mouse</p><p>0</p></div>
+<p>0</p>
+</div>
+<div class="out enterleave">
+<p>move your mouse</p>
+<div class="in enterleave"><p>move your mouse</p><p>0</p></div>
+<p>0</p>
+</div>
+<script>
+
+var i = 0;
+$( "div.overout" )
+  .mouseover(function() {
+    alert("overout");
+    $( "p:first", this ).text( "mouse over" );
+    $( "p:last", this ).text( ++i );
+  })
+  .mouseout(function() {
+    $( "p:first", this ).text( "mouse out" );
+  });
+
+var n = 0;
+$( "div.enterleave" )
+  .mouseenter(function() {
+    alert("enterleave");
+    $( "p:first", this ).text( "mouse enter" );
+    $( "p:last", this ).text( ++n );
+  })
+  .mouseleave(function() {
+    $( "p:first", this ).text( "mouse leave" );
+  });
+
+var m = 0;
+$( "#google" )
+  .mouseenter(function() {
+    $( "p:first", $("div.enterleave") ).text( "mouse enter" );
+    $( "p:first", $("div.overout") ).text( "mouse enter" );
+  })
+  .mouseleave(function() {
+    $( "p:first", $("div.enterleave") ).text( "mouse leave" );
+    $( "p:first", $("div.overout") ).text( "mouse leave" );
+  });
+
+</script>
+
+
+</body>
+</html>

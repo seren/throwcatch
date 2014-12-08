@@ -74,3 +74,16 @@ obj
     });
 -->
 </script>
+
+
+
+
+var constant_rotation = function (elementid){
+    var angle = 0;
+    setInterval(function(){
+          angle+=3;
+         $(elementid).rotate(angle);
+    },50);
+}
+// constant_rotation("#google");
+

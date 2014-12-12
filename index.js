@@ -208,15 +208,19 @@ function at_edge (event) {
 }
 
 function turn_icon_to_marker (target) {
-    target.width = 45;
-    target.height = 45;
+// console.log(target);
+    target.classList.add('marker');
+    // target.width = 45;
+    // target.height = 45;
     target.marker = true;
     // make_marker_float(target); //todo
 }
 
 function turn_marker_to_icon (target) {
-    target.width = 94;
-    target.height = 94;
+// console.log(target);
+    target.classList.remove('marker');
+    // target.width = 94;
+    // target.height = 94;
     target.marker = false;
 }
 

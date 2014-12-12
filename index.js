@@ -88,7 +88,8 @@ function Velocity_History () {
         }
     }
 }
-velocity_history = new Velocity_History();
+
+var velocity_history = new Velocity_History();
 
 
 // Todo: turn this into a weighted average, so that the most recent readings have more weight
@@ -114,11 +115,6 @@ interact('.draggable')
 
     .draggable({
         onstart: function (event) {
-            if ( event.target.marker ) {
-                turn_marker_to_icon( event.target );
-                // light_up_dropzones(); // todo
-                // save_icon_position( event.target ); // todo
-            }
 
         },
         onmove: function (event) {
@@ -190,7 +186,9 @@ interact('.draggable')
                             'Final velocity: ' +
                             velocity_history.velocity_average() + '.\nThrown = ' + toss );
 
-            // hide_dropzones(); //todo
+            if ( event.target.marker ) {
+                turn_marker_to_icon( event.target );
+            };
         }
     })
     // keep the element within the area of it's parent

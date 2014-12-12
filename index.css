@@ -1,4 +1,37 @@
 
+.dropzone {
+    background-color: #ccc;
+    border: solid 1px transparent;
+    border-radius: 4px;
+    margin: 10px auto 30px;
+    padding: 10px;
+    width: 80%;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.drop-active {
+    border-color: #666;
+}
+.drop-inactive {
+    display: hidden;
+    visibility: hidden;
+}
+
+.drop-target {
+    background-color: #29e;
+}
+
+.drag-drop.can-drop { background-color: #4e4; }
+
+
+
+
+.marker {
+  width: 40;
+  height: 40;
+}
+
+
 
 #drag-me {
     width: 100;

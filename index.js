@@ -1,7 +1,52 @@
 function angle_from_xy (x, y) {
     angle = 180 * Math.atan2(y, x) / Math.PI;
     return angle;
+};
+
+
+
+interact('.dropzone').dropzone({
+    // only accept elements matching this CSS selector
+    accept: '.marker',
+    // Require a 75% element overlap for a drop to be possible
+    overlap: 0.75,
+
+    // listen for drop related events:
+
+    ondropactivate: function (event) {
+        // add active dropzone feedback
+        event.target.classList.add('drop-active');
+        event.target.classList.remove('drop-inactive');
+    },
+    ondragenter: function (event) {
+        var draggableElement = event.relatedTarget,
+            dropzoneElement = event.target;
+
+        // feedback the possibility of a drop
+        dropzoneElement.classList.add('drop-target');
+        draggableElement.classList.add('can-drop');
+    },
+    ondragleave: function (event) {
+        // remove the drop feedback style
+        event.target.classList.remove('drop-target');
+        event.relatedTarget.classList.remove('can-drop');
+    },
+    ondrop: function (event) {
+        copy_object(event);
+    },
+    ondropdeactivate: function (event) {
+        // remove active dropzone feedback
+        event.target.classList.remove('drop-active');
+        event.target.classList.remove('drop-target');
+        event.target.classList.add('drop-inactive');
 }
+});
+
+
+
+
+
+
 
 
 toss_threshold = 800;

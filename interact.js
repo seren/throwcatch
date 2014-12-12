@@ -2227,6 +2227,9 @@
         },
 
         inertiaFrame: function () {
+            if ( this.target == null ) {
+                return;
+            } else {
             var inertiaStatus = this.inertiaStatus,
                 options = this.target.options.inertia,
                 lambda = options.resistance,

@@ -1,6 +1,12 @@
 // for coordination between interact functions (eg. dragging and droping)
 var globalaction = "";
 var justDroppedOnZone = false;
+toss_threshold = 800;
+var velocity_history = new Velocity_History();
+
+
+
+
 function angle_from_xy (x, y) {
     angle = 180 * Math.atan2(y, x) / Math.PI;
     return angle;
@@ -96,46 +102,12 @@ console.log("dropped on zone");
 
 
 
-toss_threshold = 800;
 
-function Velocity_History () {
-    var self = this;
-    var velocity_history_max_size = 4;
-    var v = [];
-    var dx = [];
-    var dy = [];
-    var props = [ v, dx, dy ]
-    self.velocity_average = function () {
-        return average_array(v);
-    }
 
-    self.add = function (obj) {
-        if ( obj.v ) { v.push( obj.v ) };
-        if ( obj.dx ) { dx.push( obj.dx ) };
-        if ( obj.dy ) { dy.push( obj.dy ) };
-        for ( var i in props ) {
-            if ( props[i].length > velocity_history_max_size ) {
-                props[i].shift();
-            }
-        }
-    }
 
-    self.dx_average = function () {
-        return average_array(dx);
-    }
 
-    self.dy_average = function () {
-        return average_array(dy);
-    }
 
-    self.truncate = function () {
-        for ( var i in props ) {
-            props[i].pop();
-        }
-    }
-}
 
-var velocity_history = new Velocity_History();
 
 
 // Todo: turn this into a weighted average, so that the most recent readings have more weight
@@ -289,3 +261,54 @@ function turn_marker_to_icon (target) {
     target.marker = false;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Velocity_History () {
+    var self = this;
+    var velocity_history_max_size = 4;
+    var v = [];
+    var dx = [];
+    var dy = [];
+    var props = [ v, dx, dy ]
+    self.velocity_average = function () {
+        return average_array(v);
+    }
+
+    self.add = function (obj) {
+        if ( obj.v ) { v.push( obj.v ) };
+        if ( obj.dx ) { dx.push( obj.dx ) };
+        if ( obj.dy ) { dy.push( obj.dy ) };
+        for ( var i in props ) {
+            if ( props[i].length > velocity_history_max_size ) {
+                props[i].shift();
+            }
+        }
+    }
+
+    self.dx_average = function () {
+        return average_array(dx);
+    }
+
+    self.dy_average = function () {
+        return average_array(dy);
+    }
+
+    self.truncate = function () {
+        for ( var i in props ) {
+            props[i].pop();
+        }
+    }
+}

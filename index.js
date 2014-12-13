@@ -113,8 +113,6 @@ console.log("dropped on zone");
 // Todo: turn this into a weighted average, so that the most recent readings have more weight
 average_array = function (arr) {
     sum=0; var i=arr.length; while(i--) sum += arr[i]
-    // console.log(sum);
-    // console.log(arr.length);
     return Math.floor(sum/arr.length);
 }
 
@@ -137,12 +135,6 @@ interact('.draggable')
 
     .draggable({
         onstart: function (event) {
-// console.log(event);
-            // if ( event.target.marker ) {
-            //     turn_marker_to_icon( event.target );
-            //     // $( '.dropzone').hide();
-            //     // save_icon_position( event.target ); // todo
-            // }
             justDroppedOnZone = false;
         },
         onmove: function (event) {
@@ -159,9 +151,6 @@ interact('.draggable')
             target.setAttribute('data-y', y);
 
 
-            // var textEl = event.target.querySelector('p');
-            var textEl = $( '#readout span' );
-
             // Save recent velocity readings
             var obj = {
                 v: parseInt( event.speed.toFixed(0), 10),
@@ -170,9 +159,6 @@ interact('.draggable')
             velocity_history.add( obj );
 
             var throwing = ( velocity_history.velocity_average() > toss_threshold );
-
-            textEl && (textEl.text(
-                'throw = '+ throwing + '. Speed is ' + velocity_history.velocity_average() ));
 
             // Todo: change dragged-image angle to indicate throwing
             if (throwing) {
@@ -248,7 +234,6 @@ function turn_icon_to_marker (target) {
     target.classList.remove('icon');
     // target.width = 45;
     // target.height = 45;
-    target.marker = true;
     // make_marker_float(target); //todo
 }
 
@@ -258,7 +243,6 @@ function turn_marker_to_icon (target) {
     target.classList.remove('marker');
     // target.width = 94;
     // target.height = 94;
-    target.marker = false;
 }
 
 

@@ -7,21 +7,26 @@
 <script type="text/javascript" src="interact.js"></script>
 <body>
 
-    <div id="readout"><span>Stuff goes here</span></div>
-
-
+<!--     <div id="readout"><span>Stuff goes here</span></div>
+ -->
     <div id="basic-drag" class="demo-area">
-        <div class="dropzone drop-inactive">dropzone</div>
+        <div class="dropzone left-zone  icon-target drop-inactive" id="cancel">cancel<br>dropzone</div>
+        <div class="dropzone right-zone icon-target drop-inactive" id="cancel">cancel<br>dropzone</div>
+
+        <div class="dropzone top-zone   marker-target drop-inactive" id="copy">copy dropzone</div>
+
+
         <img src="folder-icon.png" class="draggable folder" id="bob">
         <img src="text_file-icon.png" class="draggable file">
-        <div id="drag-me" class="draggable" id="#fred">
+
+
+        <div class="dropzone bottom-zone icon-target drop-inactive" id="delete">delete dropzone</div>
+        <div class="dropzone bottom-zone    icon-target drop-inactive" id="cancel">cancel dropzone</div>
+<!--         <div id="drag-me" class="draggable" id="fred">
             <p> Click or touch and drag this element around </p>
         </div>
-
-
-
-
-<br><br><br><br><br><br><br>
+ -->
+<br>
         <img src="folder-icon.png" class="draggable" id="bob">
 
 

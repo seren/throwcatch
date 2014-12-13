@@ -1,8 +1,52 @@
+// for coordination between interact functions (eg. dragging and droping)
+var globalaction = "";
+var justDroppedOnZone = false;
 function angle_from_xy (x, y) {
     angle = 180 * Math.atan2(y, x) / Math.PI;
     return angle;
 };
 
+
+// determines if the marker stopped over zone when thrown (unfortunately we have a bug
+//   when throwing over drop zones from forcing the inertia to end)
+function was_over_zone (event, zone_list) {
+    for ( var zid = 0, len = zone_list.length; zid < len; zid++) {
+        z = zone_list[zid];
+        x = event.x0 + event.dx;
+        y = event.y0 + event.dy;
+        zX0 = z.offsetLeft;
+        zX1 = z.offsetLeft + z.offsetWidth;
+        zY0 = z.offsetTop;
+        zY1 = z.offsetTop + z.offsetHeight;
+// console.log('zid:'+zid+' zX0:'+zX0+' zX1:'+zX1+' zY0:'+zY0+' zY1:'+zY1);
+        if ( ( x > zX0 ) && ( x < zX1 ) &&
+             ( y > zY0 ) && ( y < zY1) ) {
+console.log('on zone "'+z.id+'"');
+alert('on zone "'+z.id+'"');
+            return z;
+        }
+    }
+console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
+    return false;
+}
+
+function activate_zone_function (marker, zone) {
+// console.log("marker" + marker);
+// console.log("zone" + zone);
+globalaction = zone;
+    var cases = {
+        copy: function() {
+            console.log("copying");
+            alert('copying');
+        },
+        cancel: function() {
+            console.log("canceling");
+            // set the marker to icon and change coords back to original
+        },
+        _default: function() { alert('zone id is not a valid name'); }
+    };
+    cases[ zone.id ] ? cases[ zone.id ]() : cases._default();
+}
 
 
 interact('.dropzone').dropzone({
@@ -32,7 +76,10 @@ interact('.dropzone').dropzone({
         event.relatedTarget.classList.remove('can-drop');
     },
     ondrop: function (event) {
-        copy_object(event);
+        justDroppedOnZone = true;
+console.log("dropped on zone");
+        //   taken care of by the drop function
+        // activate_zone_function(event.relatedTarget, event.target)
     },
     ondropdeactivate: function (event) {
         // remove active dropzone feedback
@@ -58,7 +105,6 @@ function Velocity_History () {
     var dx = [];
     var dy = [];
     var props = [ v, dx, dy ]
-
     self.velocity_average = function () {
         return average_array(v);
     }
@@ -100,6 +146,10 @@ average_array = function (arr) {
     return Math.floor(sum/arr.length);
 }
 
+
+
+
+
 // target elements with the "draggable" class
 interact('.draggable')
     // enable inertial throwing
@@ -115,7 +165,13 @@ interact('.draggable')
 
     .draggable({
         onstart: function (event) {
-
+// console.log(event);
+            // if ( event.target.marker ) {
+            //     turn_marker_to_icon( event.target );
+            //     // $( '.dropzone').hide();
+            //     // save_icon_position( event.target ); // todo
+            // }
+            justDroppedOnZone = false;
         },
         onmove: function (event) {
             var target = event.target,
@@ -170,12 +226,19 @@ interact('.draggable')
                 event.interaction.inertiaStatus.active = false;
                 window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
                 turn_icon_to_marker(event.target);
+                // reset_location(event.target);
             }
 
 
         },
         // call this function on every dragend event
         onend: function (event) {
+            zone = was_over_zone( event, $('.dropzone') )
+            if ( zone ) {
+                justDroppedOnZone = true;
+                activate_zone_function(event.target, zone);
+            }
+            if ( justDroppedOnZone == false ) {
             var textEl = event.target.querySelector('p');
 
             // Remove the final 0 reading from the velocity history
@@ -189,6 +252,8 @@ interact('.draggable')
             if ( event.target.marker ) {
                 turn_marker_to_icon( event.target );
             };
+        }
+console.log('drag ended');
         }
     })
     // keep the element within the area of it's parent

@@ -2227,15 +2227,16 @@
         },
 
         inertiaFrame: function () {
-            if ( this.target == null ) {
-                return;
-            } else {
+            // if ( this.target == null ) {
+            //     return;
+            // }
+            // else {
             var inertiaStatus = this.inertiaStatus,
                 options = this.target.options.inertia,
                 lambda = options.resistance,
                 t = new Date().getTime() / 1000 - inertiaStatus.t0;
 
-            if (t < inertiaStatus.te) {
+                if ( (t < inertiaStatus.te) && (inertiaStatus == true) )  {
 
                 var progress =  1 - (Math.exp(-lambda * t) - inertiaStatus.lambda_v0) / inertiaStatus.one_ve_v0;
 
@@ -2267,6 +2268,7 @@
                 inertiaStatus.active = false;
                 this.pointerUp(inertiaStatus.startEvent, inertiaStatus.startEvent);
             }
+            // }
         },
 
         smoothEndFrame: function () {

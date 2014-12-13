@@ -15,7 +15,7 @@ function angle_from_xy (x, y) {
 
 // determines if the marker stopped over zone when thrown (unfortunately we have a bug
 //   when throwing over drop zones from forcing the inertia to end)
-function was_over_zone (event, zone_list) {
+function was_over_visible_zone (event, zone_list) {
     for ( var zid = 0, len = zone_list.length; zid < len; zid++) {
         z = zone_list[zid];
         x = event.x0 + event.dx;
@@ -191,7 +191,7 @@ interact('.draggable')
         },
         // call this function on every dragend event
         onend: function (event) {
-            zone = was_over_zone( event, $('.dropzone') )
+            zone = was_over_visible_zone( event, $('.dropzone') )
             if ( zone ) {
                 justDroppedOnZone = true;
                 activate_zone_function(event.target, zone);

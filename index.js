@@ -197,19 +197,19 @@ interact('.draggable')
                 dy: event.dy };
             velocity_history.add( obj );
 
-            var toss = ( velocity_history.velocity_average() > toss_threshold );
+            var throwing = ( velocity_history.velocity_average() > toss_threshold );
 
             textEl && (textEl.text(
-                'throw = '+ toss + '. Speed is ' + velocity_history.velocity_average() ));
+                'throw = '+ throwing + '. Speed is ' + velocity_history.velocity_average() ));
 
-            // Todo: change dragged-image angle to indicate tossing
-            if (toss) {
+            // Todo: change dragged-image angle to indicate throwing
+            if (throwing) {
                 document.documentElement.style.cursor = 'pointer';
             } else {
                 document.documentElement.style.cursor = 'move';
             }
 
-            if ( toss || event.interaction.inertiaStatus.active ) {
+            if ( throwing || event.interaction.inertiaStatus.active ) {
                 style = style + " rotate(" +
                     ( angle_from_xy( velocity_history.dx_average(), velocity_history.dy_average() ) + 90 ) +
                     "deg)";

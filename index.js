@@ -273,6 +273,7 @@ function at_edge (event) {
 function turn_icon_to_marker (target) {
 // console.log(target);
     target.classList.add('marker');
+    target.classList.remove('icon');
     // target.width = 45;
     // target.height = 45;
     target.marker = true;
@@ -281,6 +282,7 @@ function turn_icon_to_marker (target) {
 
 function turn_marker_to_icon (target) {
 // console.log(target);
+    target.classList.add('icon');
     target.classList.remove('marker');
     // target.width = 94;
     // target.height = 94;

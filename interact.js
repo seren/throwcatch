@@ -2231,43 +2231,43 @@
             //     return;
             // }
             // else {
-            var inertiaStatus = this.inertiaStatus,
-                options = this.target.options.inertia,
-                lambda = options.resistance,
-                t = new Date().getTime() / 1000 - inertiaStatus.t0;
+                var inertiaStatus = this.inertiaStatus,
+                    options = this.target.options.inertia,
+                    lambda = options.resistance,
+                    t = new Date().getTime() / 1000 - inertiaStatus.t0;
 
                 if ( (t < inertiaStatus.te) && (inertiaStatus == true) )  {
 
-                var progress =  1 - (Math.exp(-lambda * t) - inertiaStatus.lambda_v0) / inertiaStatus.one_ve_v0;
+                    var progress =  1 - (Math.exp(-lambda * t) - inertiaStatus.lambda_v0) / inertiaStatus.one_ve_v0;
 
-                if (inertiaStatus.modifiedXe === inertiaStatus.xe && inertiaStatus.modifiedYe === inertiaStatus.ye) {
-                    inertiaStatus.sx = inertiaStatus.xe * progress;
-                    inertiaStatus.sy = inertiaStatus.ye * progress;
+                    if (inertiaStatus.modifiedXe === inertiaStatus.xe && inertiaStatus.modifiedYe === inertiaStatus.ye) {
+                        inertiaStatus.sx = inertiaStatus.xe * progress;
+                        inertiaStatus.sy = inertiaStatus.ye * progress;
+                    }
+                    else {
+                        var quadPoint = getQuadraticCurvePoint(
+                                0, 0,
+                                inertiaStatus.xe, inertiaStatus.ye,
+                                inertiaStatus.modifiedXe, inertiaStatus.modifiedYe,
+                                progress);
+
+                        inertiaStatus.sx = quadPoint.x;
+                        inertiaStatus.sy = quadPoint.y;
+                    }
+
+                    this.pointerMove(inertiaStatus.startEvent, inertiaStatus.startEvent);
+
+                    inertiaStatus.i = reqFrame(this.boundInertiaFrame);
                 }
                 else {
-                    var quadPoint = getQuadraticCurvePoint(
-                            0, 0,
-                            inertiaStatus.xe, inertiaStatus.ye,
-                            inertiaStatus.modifiedXe, inertiaStatus.modifiedYe,
-                            progress);
+                    inertiaStatus.sx = inertiaStatus.modifiedXe;
+                    inertiaStatus.sy = inertiaStatus.modifiedYe;
 
-                    inertiaStatus.sx = quadPoint.x;
-                    inertiaStatus.sy = quadPoint.y;
+                    this.pointerMove(inertiaStatus.startEvent, inertiaStatus.startEvent);
+
+                    inertiaStatus.active = false;
+                    this.pointerUp(inertiaStatus.startEvent, inertiaStatus.startEvent);
                 }
-
-                this.pointerMove(inertiaStatus.startEvent, inertiaStatus.startEvent);
-
-                inertiaStatus.i = reqFrame(this.boundInertiaFrame);
-            }
-            else {
-                inertiaStatus.sx = inertiaStatus.modifiedXe;
-                inertiaStatus.sy = inertiaStatus.modifiedYe;
-
-                this.pointerMove(inertiaStatus.startEvent, inertiaStatus.startEvent);
-
-                inertiaStatus.active = false;
-                this.pointerUp(inertiaStatus.startEvent, inertiaStatus.startEvent);
-            }
             // }
         },
 

@@ -8,6 +8,10 @@
       position:absolute;
       bottom:0;
 }
+.bottom-button {
+      width: 50px;
+      margin: 0px auto;
+}
 
 .left-zone {
       height: 100%;
@@ -39,8 +43,6 @@
 .drop-target {
     background-color: #29e;
 }
-
-.drag-drop.can-drop { background-color: #4e4; }
 
 
 

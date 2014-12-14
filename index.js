@@ -342,7 +342,7 @@ interact('.copy-zone').dropzone({
 
 function Velocity_History () {
     var self = this;
-    var velocity_history_max_size = 4;
+    var velocity_history_max_size = 8;
     var v = [];
     var dx = [];
     var dy = [];

@@ -152,15 +152,10 @@ interact('.draggable')
             target.setAttribute('data-x', x);
             target.setAttribute('data-y', y);
 
+            velocity_history.add( target.speed.toFixed(1) );
 
-            // Save recent velocity readings
-            var obj = {
-                v: parseInt( event.speed.toFixed(0), 10),
-                dx: event.dx,
-                dy: event.dy };
-            velocity_history.add( obj );
+            var throwing = ( velocity_history.average() > toss_threshold );
 
-            var throwing = ( velocity_history.velocity_average() > toss_threshold );
 
             // Todo: change dragged-image angle to indicate throwing
             if (throwing) {
@@ -349,35 +344,18 @@ function Velocity_History () {
     var self = this;
     var velocity_history_max_size = 8;
     var v = [];
-    var dx = [];
-    var dy = [];
-    var props = [ v, dx, dy ]
-    self.velocity_average = function () {
+    self.average = function () {
         return average_array(v);
     }
 
-    self.add = function (obj) {
-        if ( obj.v ) { v.push( obj.v ) };
-        if ( obj.dx ) { dx.push( obj.dx ) };
-        if ( obj.dy ) { dy.push( obj.dy ) };
-        for ( var i in props ) {
-            if ( props[i].length > velocity_history_max_size ) {
-                props[i].shift();
-            }
+    self.add = function (x) {
+        v.push(x)
+        if ( v.length > velocity_history_max_size ) {
+            v.shift();
         }
-    }
-
-    self.dx_average = function () {
-        return average_array(dx);
-    }
-
-    self.dy_average = function () {
-        return average_array(dy);
     }
 
     self.truncate = function () {
-        for ( var i in props ) {
-            props[i].pop();
-        }
+        v.pop();
     }
 }

@@ -196,9 +196,6 @@ interact('.draggable')
             if ( justDroppedOnZone == false ) {
                 var textEl = event.target.querySelector('p');
 
-                // Remove the final 0 reading from the velocity history
-                velocity_history.truncate();
-
                 if ( event.target.classList.contains('marker') ) {
                     turn_marker_to_icon( event.target );
                 };

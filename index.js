@@ -125,6 +125,7 @@ interact('.draggable')
 
     .draggable({
         onstart: function (event) {
+            target = event.target;
             justDroppedOnZone = false;
             if ( target.classList.contains('marker') != true ) {
                 // store initial coordinates in case the throw-catch is canceled

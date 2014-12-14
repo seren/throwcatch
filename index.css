@@ -41,7 +41,6 @@
 
 .dropzone {
   background-color: rgba(200, 200, 200, 0.4);
-  /*border: solid 1px transparent;*/
   border-radius: 4px;
   position: fixed;
   padding: 10px;
@@ -77,11 +76,4 @@
   height: 100%;
   position: relative;
   display: inline-block;
-  border: 1px solid blue; }
-  .demo-area::before {
-    background-color: #272822;
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0; }
+}

@@ -174,6 +174,8 @@ interact('.draggable')
                 event.interaction.inertiaStatus.active = false;
                 window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
                 turn_icon_to_marker(event.target);
+                deactivate_all_zones();
+
                 // reset_location(event.target);
             }
 
@@ -230,6 +232,31 @@ function turn_marker_to_icon (target) {
     target.classList.add('icon');
     target.classList.remove('marker');
 }
+
+function deactivate_all_zones () {
+console.log('deactivate_all_zones');
+    divs = $('#basic-drag div')
+    for ( var i = 0, len = divs.length; i < len; i++) {
+        d=divs[i]
+        d.classList.remove('drop-active');
+        d.classList.remove('drop-target');
+        d.classList.add('drop-inactive');
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function genericOndropactivate (event) {
 console.log(event.target);

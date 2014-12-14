@@ -6,6 +6,12 @@ var velocity_history = new Velocity_History();
 // gotta keep track of the active zones because interacte().dropzone deactivates them before we can check their classes
 var last_active_zone = null;
 
+function rotate (angle, target) {
+    style = style + " rotate(" + angle + "deg)";
+    target.style.webkitTransform =
+    target.style.transform =
+        style;
+}
 
 
 function angle_from_xy (x, y) {
@@ -164,9 +170,7 @@ interact('.draggable')
             }
 
             if ( throwing || event.interaction.inertiaStatus.active ) {
-                style = style + " rotate(" +
-                    ( angle_from_xy( velocity_history.dx_average(), velocity_history.dy_average() ) + 90 ) +
-                    "deg)";
+                rotate('90',target);
             }
 
 
@@ -226,6 +230,7 @@ function turn_icon_to_marker (target) {
     target.classList.add('marker');
     target.classList.remove('icon');
     // make_marker_float(target); //todo
+    rotate('-90',target);
 }
 
 function turn_marker_to_icon (target) {

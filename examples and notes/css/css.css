@@ -1,0 +1,103 @@
+
+.dropzone {
+
+    border: solid 1px transparent;
+	position:fixed;
+	background-color: #ccc;
+    border-radius: 4px;
+
+    padding: 10px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.left-zone > img{
+	 position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.left-zone {
+     top: 0;
+	 bottom: 0;
+     width: 40px;
+     left: 0;
+}
+
+
+
+
+.right-zone {
+	  top: 0;
+	  bottom: 0;
+      width: 40px;
+      right:0;
+}
+
+.right-zone > img{
+	 position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.top-zone, .bottom-zone {
+  left: 0; right: 0;
+  height: 40px;
+  }
+
+.top-zone {
+      top:0;
+      /*float: top;*/
+}
+
+.bottom-zone {
+	  bottom: 0;
+      width: 100px;
+      margin: 0px auto;
+
+}
+.bottom-button {
+	  bottom: 0;
+      width: 50px;
+      margin: 0px auto;
+}
+
+.drop-active {
+    border-color: #666;
+}
+.drop-inactive {
+    display: hidden;
+    visibility: hidden;
+}
+
+.drop-target {
+    background-color: #29e;
+}
+
+
+.marker {
+  width: 40;
+  height: 40;
+}
+.icon {
+  width: 80;
+  height: 80;
+}
+
+
+.demo-area {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  /*margin: 1.8em auto 0.5em auto;*/
+  border: 1px solid blue; }
+
+.demo-area::before {
+    /*width: 0.25em;*/
+    background-color: #272822;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0; }

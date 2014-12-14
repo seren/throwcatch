@@ -3,7 +3,8 @@ var globalaction = "";
 var justDroppedOnZone = false;
 toss_threshold = 800;
 var velocity_history = new Velocity_History();
-
+// gotta keep track of the active zones because interacte().dropzone deactivates them before we can check their classes
+var last_active_zone = null;
 
 
 
@@ -55,45 +56,6 @@ globalaction = zone;
 }
 
 
-interact('.dropzone').dropzone({
-    // only accept elements matching this CSS selector
-    accept: '.marker',
-    // Require a 75% element overlap for a drop to be possible
-    overlap: 0.75,
-
-    // listen for drop related events:
-
-    ondropactivate: function (event) {
-        // add active dropzone feedback
-        event.target.classList.add('drop-active');
-        event.target.classList.remove('drop-inactive');
-    },
-    ondragenter: function (event) {
-        var draggableElement = event.relatedTarget,
-            dropzoneElement = event.target;
-
-        // feedback the possibility of a drop
-        dropzoneElement.classList.add('drop-target');
-        draggableElement.classList.add('can-drop');
-    },
-    ondragleave: function (event) {
-        // remove the drop feedback style
-        event.target.classList.remove('drop-target');
-        event.relatedTarget.classList.remove('can-drop');
-    },
-    ondrop: function (event) {
-        justDroppedOnZone = true;
-console.log("dropped on zone");
-        //   taken care of by the drop function
-        // activate_zone_function(event.relatedTarget, event.target)
-    },
-    ondropdeactivate: function (event) {
-        // remove active dropzone feedback
-        event.target.classList.remove('drop-active');
-        event.target.classList.remove('drop-target');
-        event.target.classList.add('drop-inactive');
-}
-});
 
 
 
@@ -244,6 +206,72 @@ function turn_marker_to_icon (target) {
     // target.width = 94;
     // target.height = 94;
 }
+
+function genericOndropactivate (event) {
+console.log(event.target);
+    event.target.classList.add('drop-active');
+    event.target.classList.remove('drop-inactive');
+}
+
+function genericOndragenter (event) {
+console.log("entered zone");
+    var draggableElement = event.relatedTarget,
+        dropzoneElement = event.target;
+    dropzoneElement.classList.add('drop-target');
+    last_active_zone = dropzoneElement;
+}
+
+function genericOndragleave (event) {
+    event.target.classList.remove('drop-target');
+}
+
+function genericOndrop (event) {
+    justDroppedOnZone = true;
+console.log("dropped on zone (according to zone func)");
+    //   taken care of by the drop function
+    // activate_zone_function(event.relatedTarget, event.target)
+}
+
+function genericOndropdeactivate (event) {
+    event.target.classList.remove('drop-active');
+    event.target.classList.remove('drop-target');
+    event.target.classList.add('drop-inactive');
+}
+
+
+
+
+interact('.cancel-zone').dropzone({
+    accept: '.marker',
+    ondropactivate: function (event) { genericOndropactivate(event); },
+    ondragenter: function (event) {genericOndragenter(event); },
+    ondragleave: function (event) {genericOndragleave(event); },
+    ondrop: function (event) {genericOndrop(event); },
+    ondropdeactivate: function (event) {genericOndropdeactivate(event); }
+});
+
+
+interact('.delete-zone').dropzone({
+    accept: '.icon',
+    ondropactivate: function (event) { genericOndropactivate(event); },
+    ondragenter: function (event) {genericOndragenter(event); },
+    ondragleave: function (event) {genericOndragleave(event); },
+    ondrop: function (event) {genericOndrop(event); },
+    ondropdeactivate: function (event) {genericOndropdeactivate(event); }
+});
+
+interact('.copy-zone').dropzone({
+    accept: '.marker',
+    ondropactivate: function (event) { genericOndropactivate(event); },
+    ondragenter: function (event) {genericOndragenter(event); },
+    ondragleave: function (event) {genericOndragleave(event); },
+    ondrop: function (event) {genericOndrop(event); },
+    ondropdeactivate: function (event) {genericOndropdeactivate(event); }
+});
+
+
+
+
 
 
 

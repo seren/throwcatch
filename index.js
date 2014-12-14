@@ -194,20 +194,15 @@ interact('.draggable')
                 activate_zone_function(event.target, zone);
             }
             if ( justDroppedOnZone == false ) {
-            var textEl = event.target.querySelector('p');
+                var textEl = event.target.querySelector('p');
 
-            // Remove the final 0 reading from the velocity history
-            velocity_history.truncate();
+                // Remove the final 0 reading from the velocity history
+                velocity_history.truncate();
 
-            var toss = (  velocity_history.velocity_average() > toss_threshold );
-            textEl && (textEl.textContent =
-                            'Final velocity: ' +
-                            velocity_history.velocity_average() + '.\nThrown = ' + toss );
-
-            if ( event.target.marker ) {
-                turn_marker_to_icon( event.target );
-            };
-        }
+                if ( event.target.classList.contains('marker') ) {
+                    turn_marker_to_icon( event.target );
+                };
+            }
 console.log('drag ended');
         }
     })

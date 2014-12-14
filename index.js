@@ -54,27 +54,38 @@ console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
     return false;
 }
 
-function activate_zone_function (marker, zone) {
+// this actually does the work of the activated zone
+function activate_zone_function (marker, zone_name) {
 // console.log("marker" + marker);
-// console.log("zone" + zone);
-globalaction = zone;
+// console.log("zone_name" + zone_name);
+    globalaction = zone_name;
     var cases = {
         copy: function() {
             console.log("copying");
-            alert('copying');
+            old_img = $('#'+marker.id)
+            new_img = $('#'+marker.id).clone().appendTo('.demo-area');
+            new_img[0].id = (new Date()).getTime().toString();
         },
         cancel: function() {
             console.log("canceling");
+
+            style = 'translate(' + marker.originalX + 'px, ' + marker.originalY + 'px)';
+            target.style.webkitTransform =
+            target.style.transform =
+                style;
+
+            turn_marker_to_icon(marker);
             // set the marker to icon and change coords back to original
         },
-        _default: function() { alert('zone id is not a valid name'); }
+        delete: function() {
+            console.log("deleting");
+            console.log(marker);
+            marker.style.display="none";
+        },
+        _default: function() { alert('zone_name "'+zone_name+'" is not a valid name'); }
     };
-    cases[ zone.id ] ? cases[ zone.id ]() : cases._default();
+    cases[ zone_name ] ? cases[ zone_name ]() : cases._default();
 }
-
-
-
-
 
 
 
@@ -211,8 +222,6 @@ function turn_icon_to_marker (target) {
 // console.log(target);
     target.classList.add('marker');
     target.classList.remove('icon');
-    // target.width = 45;
-    // target.height = 45;
     // make_marker_float(target); //todo
 }
 
@@ -220,8 +229,6 @@ function turn_marker_to_icon (target) {
 // console.log(target);
     target.classList.add('icon');
     target.classList.remove('marker');
-    // target.width = 94;
-    // target.height = 94;
 }
 
 function genericOndropactivate (event) {

@@ -13,24 +13,41 @@ function angle_from_xy (x, y) {
     return angle;
 };
 
+// extract the zone type from the class name
+function zoneTypeFromZone (zone) {
+    var r = /(.*)-zone/;
+    classes = zone.classList;
+    for (var i = 0, len = classes.length; i < len; i++) {
+        if ( r.test(classes[i]) ) {
+            zone_type = r.exec(classes[i])[1];
+            return zone_type;
+        }
+    }
+    return false;
+}
 
 // determines if the marker stopped over zone when thrown (unfortunately we have a bug
 //   when throwing over drop zones from forcing the inertia to end)
-function was_over_visible_zone (event, zone_list) {
-    for ( var zid = 0, len = zone_list.length; zid < len; zid++) {
-        z = zone_list[zid];
-        x = event.x0 + event.dx;
-        y = event.y0 + event.dy;
+function was_over_visible_zone (event) {
+    x = event.x0 + event.dx;
+    y = event.y0 + event.dy;
+    z = last_active_zone;
+    if ( z ) {
         zX0 = z.offsetLeft;
         zX1 = z.offsetLeft + z.offsetWidth;
         zY0 = z.offsetTop;
         zY1 = z.offsetTop + z.offsetHeight;
-// console.log('zid:'+zid+' zX0:'+zX0+' zX1:'+zX1+' zY0:'+zY0+' zY1:'+zY1);
+    console.log('zid:'+z.id+' z:'+zX0+','+zX1+','+zY0+','+zY1);
         if ( ( x > zX0 ) && ( x < zX1 ) &&
              ( y > zY0 ) && ( y < zY1) ) {
-console.log('on zone "'+z.id+'"');
-alert('on zone "'+z.id+'"');
-            return z;
+            zone_type = zoneTypeFromZone(z);
+            if ( zone_type ) {
+                console.log('on zone "'+z.id+'", type: '+zone_type);
+                return zone_type;
+            } else {
+                alert("no zone_type found");
+            }
+    alert('on zone "'+z.id+'"');
         }
     }
 console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
@@ -153,7 +170,7 @@ interact('.draggable')
         },
         // call this function on every dragend event
         onend: function (event) {
-            zone = was_over_visible_zone( event, $('.dropzone') )
+            zone = was_over_visible_zone( event );
             if ( zone ) {
                 justDroppedOnZone = true;
                 activate_zone_function(event.target, zone);

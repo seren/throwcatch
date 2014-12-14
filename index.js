@@ -135,8 +135,8 @@ interact('.draggable')
             justDroppedOnZone = false;
             if ( target.classList.contains('marker') != true ) {
                 // store initial coordinates in case the throw-catch is canceled
-                target.originalX = (parseFloat(target.getAttribute('data-x')) || 0) + target.x,
-                target.originalY = (parseFloat(target.getAttribute('data-y')) || 0) + target.y;
+                target.originalX = (parseFloat(target.getAttribute('data-x')) || 0),
+                target.originalY = (parseFloat(target.getAttribute('data-y')) || 0);
             }
         },
         onmove: function (event) {

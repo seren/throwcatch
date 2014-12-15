@@ -149,6 +149,8 @@ interact('.draggable')
 console.log('------------');
             target = event.target;
             justDroppedOnZone = false;
+            thrown = false;
+            throw_at_edge = false;
             if ( target.classList.contains('marker') == true ) {
                 // store initial coordinates in case the throw-catch is canceled
                 target.originalMarkerX = (parseFloat(target.getAttribute('data-x')) || 0),
@@ -188,17 +190,18 @@ console.log('------------');
 
             // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame (there's an Interaction without a target being inertially processed)
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
-                event.interaction.stop();
-                event.interaction.inertiaStatus.active = false;
-                window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
-                turn_icon_to_marker(event.target);
-                deactivate_all_zones();
-
+                console.log('ending inertia');
+                if (throw_at_edge) {
+                    event.interaction.stop();
+                    event.interaction.inertiaStatus.active = false;
+                    window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
+                    turn_icon_to_marker(event.target);
                     reset_icon_location_with_offset(event.target);
+                    deactivate_all_zones();
+                }
+                throw_at_edge = true;
                 // reset_location(event.target);
             }
-
-
         },
         // call this function on every dragend event
         onend: function (event) {

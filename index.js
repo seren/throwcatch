@@ -176,8 +176,8 @@ console.log('------------');
             target.setAttribute('data-x', x);
             target.setAttribute('data-y', y);
 
-            velocity_history.add( target.speed.toFixed(1) );
-
+            if (target.speed) {
+               velocity_history.add( target.speed.toFixed(1) );
             }
             if ( ( velocity_history.average() > toss_threshold ) || event.interaction.inertiaStatus.active ) {
                 rotate('90',target);

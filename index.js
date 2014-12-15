@@ -154,17 +154,8 @@ interact('.draggable')
 
             velocity_history.add( target.speed.toFixed(1) );
 
-            var throwing = ( velocity_history.average() > toss_threshold );
-
-
-            // Todo: change dragged-image angle to indicate throwing
-            if (throwing) {
-                document.documentElement.style.cursor = 'pointer';
-            } else {
-                document.documentElement.style.cursor = 'move';
             }
-
-            if ( throwing || event.interaction.inertiaStatus.active ) {
+            if ( ( velocity_history.average() > toss_threshold ) || event.interaction.inertiaStatus.active ) {
                 rotate('90',target);
             }
 

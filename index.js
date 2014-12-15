@@ -18,6 +18,25 @@ function angle_from_xy (x, y) {
     angle = 180 * Math.atan2(y, x) / Math.PI;
     return angle;
 };
+function reset_icon_location (target) {
+    reset_object_location(target, target.originalIconX, target.originalIconY);
+}
+function reset_icon_location_with_offset (target) {
+    reset_object_location(target, target.originalIconX + 40, target.originalIconY + -30);
+}
+function reset_marker_location (target) {
+    reset_object_location(target, target.originalMarkerX, target.originalMarkerY);
+}
+function reset_object_location (target, x, y) {
+
+    style = 'translate(' + x + 'px, ' + y + 'px)';
+    target.style.webkitTransform =
+    target.style.transform =
+        style;
+    target.setAttribute('data-x',x);
+    target.setAttribute('data-y',y);
+}
+
 
 // extract the zone type from the class name
 function zoneTypeFromZone (zone) {
@@ -68,20 +87,18 @@ function activate_zone_function (marker, zone_name) {
     var cases = {
         copy: function() {
             console.log("copying");
-            old_img = $('#'+marker.id)
+            old_img = $('#'+marker.id)[0]
             new_img = $('#'+marker.id).clone().appendTo('.demo-area');
             new_img[0].id = (new Date()).getTime().toString();
+            reset_marker_location(old_img);
         },
         cancel: function() {
             console.log("canceling");
 
-            style = 'translate(' + marker.originalX + 'px, ' + marker.originalY + 'px)';
-            target.style.webkitTransform =
-            target.style.transform =
-                style;
 
             turn_marker_to_icon(marker);
             // set the marker to icon and change coords back to original
+            reset_icon_location(marker);
         },
         delete: function() {
             console.log("deleting");
@@ -133,10 +150,13 @@ interact('.draggable')
         onstart: function (event) {
             target = event.target;
             justDroppedOnZone = false;
-            if ( target.classList.contains('marker') != true ) {
+            if ( target.classList.contains('marker') == true ) {
                 // store initial coordinates in case the throw-catch is canceled
-                target.originalX = (parseFloat(target.getAttribute('data-x')) || 0),
-                target.originalY = (parseFloat(target.getAttribute('data-y')) || 0);
+                target.originalMarkerX = (parseFloat(target.getAttribute('data-x')) || 0),
+                target.originalMarkerY = (parseFloat(target.getAttribute('data-y')) || 0);
+            } else {
+                target.originalIconX = (parseFloat(target.getAttribute('data-x')) || 0),
+                target.originalIconY = (parseFloat(target.getAttribute('data-y')) || 0);
             }
         },
         onmove: function (event) {
@@ -172,6 +192,7 @@ interact('.draggable')
                 turn_icon_to_marker(event.target);
                 deactivate_all_zones();
 
+                    reset_icon_location_with_offset(event.target);
                 // reset_location(event.target);
             }
 

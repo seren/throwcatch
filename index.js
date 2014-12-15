@@ -62,15 +62,15 @@ function was_over_visible_zone (event) {
              ( y > zY0 ) && ( y < zY1) ) {
             zone_type = zoneTypeFromZone(z);
             if ( zone_type ) {
-                console.log('on zone "'+z.id+'", type: '+zone_type);
+                // console.log('on zone "'+z.id+'", type: '+zone_type);
                 return zone_type;
             } else {
-                alert("no zone_type found");
+                // alert("no zone_type found");
             }
-    alert('on zone "'+z.id+'"');
+            // alert('on zone "'+z.id+'"');
         }
     }
-console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
+    console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
     return false;
 }
 
@@ -140,6 +140,7 @@ interact('.draggable')
 
     .draggable({
         onstart: function (event) {
+console.log('------------');
             target = event.target;
             justDroppedOnZone = false;
             if ( target.classList.contains('marker') == true ) {
@@ -150,13 +151,18 @@ interact('.draggable')
                 target.originalIconX = (parseFloat(target.getAttribute('data-x')) || 0),
                 target.originalIconY = (parseFloat(target.getAttribute('data-y')) || 0);
             }
+// console.log('orig x: '+target.originalIconX);
+// console.log('data-x: '+target.getAttribute('data-x')+'         dx.'+event.dx);
+// console.log('orig y: '+target.originalIconY);
+// console.log('data-y: '+target.getAttribute('data-y')+'         dy.'+event.dy);
+
         },
         onmove: function (event) {
             var target = event.target,
                 // keep the dragged position in the data-x/data-y attributes
                 x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
                 y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
+// console.log(x+','+y);
             // translate the element
             style = 'translate(' + x + 'px, ' + y + 'px)';
 
@@ -170,8 +176,6 @@ interact('.draggable')
             if ( ( velocity_history.average() > toss_threshold ) || event.interaction.inertiaStatus.active ) {
                 rotate('90',target);
             }
-
-
             target.style.webkitTransform =
             target.style.transform =
                 style;
@@ -201,11 +205,14 @@ console.log('over visible zone: '+ zone);
                 activate_zone_function(event.target, zone);
             }
             if ( justDroppedOnZone == false ) {
+                // indicates a drop/move
                 if ( event.target.classList.contains('marker') ) {
+                    console.log('turning to icon:');
+                    console.log(event.target);
                     turn_marker_to_icon( event.target );
                 };
             }
-console.log('drag ended');
+            console.log('drag ended');
         }
     })
     // keep the element within the area of it's parent
@@ -216,6 +223,7 @@ console.log('drag ended');
     });
 
 
+// detects if we hit the edge and caused the bounding restrictions to kick in
 function at_edge (event) {
     if ( ( event.interaction.restrictStatus.dx != 0 ) || ( event.interaction.restrictStatus.dy != 0 ) ) {
         return true;

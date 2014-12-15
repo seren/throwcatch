@@ -188,8 +188,11 @@ interact('.draggable')
         },
         // call this function on every dragend event
         onend: function (event) {
+            // remove styling in case it had been enabled
+            event.target.classList.remove('over-dropzone');
             zone = was_over_visible_zone( event );
             if ( zone ) {
+console.log('over visible zone: '+ zone);
                 justDroppedOnZone = true;
                 activate_zone_function(event.target, zone);
             }
@@ -263,15 +266,17 @@ console.log(event.target);
 }
 
 function genericOndragenter (event) {
-console.log("entered zone");
+console.log("entered zone "+zoneTypeFromZone(event.target));
     var draggableElement = event.relatedTarget,
         dropzoneElement = event.target;
     dropzoneElement.classList.add('drop-target');
+    draggableElement.classList.add('over-dropzone');
     last_active_zone = dropzoneElement;
 }
 
 function genericOndragleave (event) {
     event.target.classList.remove('drop-target');
+    event.relatedTarget.classList.remove('over-dropzone');
 }
 
 function genericOndrop (event) {

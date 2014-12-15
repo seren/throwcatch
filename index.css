@@ -48,8 +48,10 @@
 }
 
 
-.drop-active {
+.over-dropzone {
     border-color: #666;
+    border-radius: 14px;
+    border: dotted 2px;
 }
 .drop-inactive {
     display: hidden;

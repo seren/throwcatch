@@ -1,10 +1,14 @@
 // for coordination between interact functions (eg. dragging and droping)
 var globalaction = "";
 var justDroppedOnZone = false;
+var thrown = false;
 toss_threshold = 800;
 var velocity_history = new Velocity_History();
 // gotta keep track of the active zones because interacte().dropzone deactivates them before we can check their classes
 var last_active_zone = null;
+var active_icon = null;
+// used to prevent us from trying to end a drop multiple times
+var throw_at_edge = false;
 
 function rotate (angle, target) {
     style = style + " rotate(" + angle + "deg)";
@@ -68,6 +72,8 @@ function was_over_visible_zone (event) {
                 // alert("no zone_type found");
             }
             // alert('on zone "'+z.id+'"');
+        } else {
+            // console.log('no match zid:'+z.id+' z:'+zX0+','+zX1+','+zY0+','+zY1);
         }
     }
     console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);

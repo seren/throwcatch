@@ -14,10 +14,6 @@ function rotate (angle, target) {
 }
 
 
-function angle_from_xy (x, y) {
-    angle = 180 * Math.atan2(y, x) / Math.PI;
-    return angle;
-};
 function reset_icon_location (target) {
     reset_object_location(target, target.originalIconX, target.originalIconY);
 }
@@ -62,7 +58,6 @@ function was_over_visible_zone (event) {
         zX1 = z.offsetLeft + z.offsetWidth;
         zY0 = z.offsetTop;
         zY1 = z.offsetTop + z.offsetHeight;
-    console.log('zid:'+z.id+' z:'+zX0+','+zX1+','+zY0+','+zY1);
         if ( ( x > zX0 ) && ( x < zX1 ) &&
              ( y > zY0 ) && ( y < zY1) ) {
             zone_type = zoneTypeFromZone(z);
@@ -94,10 +89,7 @@ function activate_zone_function (marker, zone_name) {
         },
         cancel: function() {
             console.log("canceling");
-
-
             turn_marker_to_icon(marker);
-            // set the marker to icon and change coords back to original
             reset_icon_location(marker);
         },
         delete: function() {
@@ -209,8 +201,6 @@ console.log('over visible zone: '+ zone);
                 activate_zone_function(event.target, zone);
             }
             if ( justDroppedOnZone == false ) {
-                var textEl = event.target.querySelector('p');
-
                 if ( event.target.classList.contains('marker') ) {
                     turn_marker_to_icon( event.target );
                 };

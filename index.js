@@ -1,3 +1,4 @@
+
 // for coordination between interact functions (eg. dragging and droping)
 var globalaction = "";
 var justDroppedOnZone = false;
@@ -53,8 +54,8 @@ function zoneTypeFromZone (zone) {
     return false;
 }
 
-// determines if the marker stopped over zone when thrown (unfortunately we have a bug
-//   when throwing over drop zones from forcing the inertia to end)
+
+
 function edge_zone_mapping (zone_list) {
     for ( var zid = 0, len = zone_list.length; zid < len; zid++) {
         z = zone_list[zid];
@@ -67,6 +68,8 @@ console.log('mapping: on zone "'+z.id+'"');
 }
 
 
+// determines if the marker stopped over zone when thrown (unfortunately we have a bug
+//   when throwing over drop zones from forcing the inertia to end)
 function was_over_visible_zone (event) {
     x = event.x0 + event.dx;
     y = event.y0 + event.dy;
@@ -80,17 +83,17 @@ function was_over_visible_zone (event) {
              ( y > zY0 ) && ( y < zY1) ) {
             zone_type = zoneTypeFromZone(z);
             if ( zone_type ) {
-                // console.log('on zone "'+z.id+'", type: '+zone_type);
+                console.log('on zone "'+z.id+'", type: '+zone_type);
                 return zone_type;
             } else {
                 // alert("no zone_type found");
             }
-            // alert('on zone "'+z.id+'"');
+            alert('non-brute: on zone "'+z.id+'"');
         } else {
-            // console.log('no match zid:'+z.id+' z:'+zX0+','+zX1+','+zY0+','+zY1);
+            console.log('non-brute: no match zid:'+z.id+' z:'+zX0+','+zX1+','+zY0+','+zY1);
         }
     }
-    console.log('not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
+    console.log('non-brute: not on zone, x'+x+' y'+y+' dx'+event.dx+' dy'+event.dy);
     return false;
 }
 
@@ -233,7 +236,12 @@ console.log('------------');
                 window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
 
                         deactivate_all_zones();
+
+                console.log('move: drag ended');
             }
+
+
+
         },
         // call this function on every dragend event
         onend: function (event) {
@@ -241,14 +249,14 @@ console.log('------------');
             event.target.classList.remove('over-dropzone');
             zone = was_over_visible_zone( event );
             if ( zone ) {
-console.log('over visible zone: '+ zone);
+                console.log('end: over visible zone: '+ zone);
                 justDroppedOnZone = true;
                 activate_zone_function(event.target, zone);
             }
             if ( justDroppedOnZone == false ) {
                 // indicates a drop/move
                 if ( event.target.classList.contains('marker') ) {
-                    console.log('turning to icon:');
+                    console.log('end: turning to icon:');
                     console.log(event.target);
                     turn_marker_to_icon( event.target );
                 };
@@ -272,6 +280,9 @@ function at_edge (event) {
     if ( event.interaction.restrictStatus.dy > 0 ) { which_edge_hit = "top"; }
     if ( event.interaction.restrictStatus.dy < 0 ) { which_edge_hit = "bottom"; }
     if ( which_edge_hit ) {
+console.log('at edge:');
+console.log(event.interaction.restrictStatus.dx);
+console.log(event.interaction.restrictStatus.dy);
         return true;
     }
 }

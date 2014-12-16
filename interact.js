@@ -1748,14 +1748,18 @@
                 draggableElement = this.element,
                 drop = this.getDrop(dragEvent, draggableElement);
 
+console.log('-------');
+console.log(this);
             this.dropTarget = drop.dropzone;
             this.dropElement = drop.element;
 
             var dropEvents = this.getDropEvents(event, dragEvent);
-
+console.log(dropEvents.move);
+console.log(this.dropTarget);
 var backup_dropTarget = this.dropTarget;
             target.fire(dragEvent);
 if ( this.dropTarget == null ) { this.dropTarget = backup_dropTarget; }
+console.log(this.dropTarget);
 
             if (dropEvents.leave && this.prevDropTarget) { this.prevDropTarget.fire(dropEvents.leave); }
             if (dropEvents.enter) {     this.dropTarget.fire(dropEvents.enter); }
@@ -2091,18 +2095,25 @@ if ( this.dropTarget == null ) { this.dropTarget = backup_dropTarget; }
             if (dynamicDrop) {
                 this.setActiveDrops(dragElement);
             }
+// console.log(this.activeDrops.dropzones.length);
+// console.log('this.activeDrops:');
+// console.log(this.activeDrops);
 
             // collect all dropzones and their elements which qualify for a drop
             for (var j = 0; j < this.activeDrops.dropzones.length; j++) {
                 var current        = this.activeDrops.dropzones[j],
                     currentElement = this.activeDrops.elements [j],
                     rect           = this.activeDrops.rects    [j];
+// console.log('current dz:');
+// console.log(current);
+// console.log('current el:');
+// console.log(currentElement);
 
                 validDrops.push(current.dropCheck(this.pointers[0], this.target, dragElement, currentElement, rect)
                                 ? currentElement
                                 : null);
             }
-
+// console.log(validDrops);
             // get the most apprpriate dropzone based on DOM depth and order
             var dropIndex = indexOfDeepestElement(validDrops),
                 dropzone  = this.activeDrops.dropzones[dropIndex] || null,

@@ -1753,9 +1753,11 @@
 
             var dropEvents = this.getDropEvents(event, dragEvent);
 
+var backup_dropTarget = this.dropTarget;
             target.fire(dragEvent);
+if ( this.dropTarget == null ) { this.dropTarget = backup_dropTarget; }
 
-            if (dropEvents.leave) { this.prevDropTarget.fire(dropEvents.leave); }
+            if (dropEvents.leave && this.prevDropTarget) { this.prevDropTarget.fire(dropEvents.leave); }
             if (dropEvents.enter) {     this.dropTarget.fire(dropEvents.enter); }
             if (dropEvents.move ) {     this.dropTarget.fire(dropEvents.move ); }
 
@@ -2227,16 +2229,15 @@
         },
 
         inertiaFrame: function () {
-            // if ( this.target == null ) {
-            //     return;
-            // }
-            // else {
+            if ( this.target == null ) {
+                return;
+            }
+            else {
                 var inertiaStatus = this.inertiaStatus,
                     options = this.target.options.inertia,
                     lambda = options.resistance,
                     t = new Date().getTime() / 1000 - inertiaStatus.t0;
-
-                if ( (t < inertiaStatus.te) && (inertiaStatus == true) )  {
+                if ( inertiaStatus.active && (t < inertiaStatus.te) )  {
 
                     var progress =  1 - (Math.exp(-lambda * t) - inertiaStatus.lambda_v0) / inertiaStatus.one_ve_v0;
 
@@ -2268,7 +2269,7 @@
                     inertiaStatus.active = false;
                     this.pointerUp(inertiaStatus.startEvent, inertiaStatus.startEvent);
                 }
-            // }
+            }
         },
 
         smoothEndFrame: function () {

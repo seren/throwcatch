@@ -203,19 +203,36 @@ console.log('------------');
             target.style.transform =
                 style;
 
+            // set thrown flag if it's not already set and we're coasting
+            if ( (thrown == false) && (event.interaction.inertiaStatus.active) ) { thrown = true; };
+
             // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame (there's an Interaction without a target being inertially processed)
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
-                console.log('ending inertia');
-                if (throw_at_edge) {
-                    event.interaction.stop();
-                    event.interaction.inertiaStatus.active = false;
-                    window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
-                    turn_icon_to_marker(event.target);
-                    reset_icon_location_with_offset(event.target);
-                    deactivate_all_zones();
+                event.target.classList.remove('over-dropzone');
+                zone = edge_zone_mapping ($('.dropzone'));
+                // zone = was_over_visible_zone_brute_force( event, $('.dropzone') );
+
+                console.log('move: ending inertia');
+
+                if ( zone ) {
+                    console.log('move: over visible zone: '+ zone);
+                    justDroppedOnZone = true;
+                    activate_zone_function(event.target, zone);
+                    // indicates a drop/move
+                } else {
+                    if ( event.target.classList.contains('marker') == false ) {
+                        turn_icon_to_marker(event.target);
+                        reset_icon_location_with_offset(event.target);
+
+                    };
                 }
-                throw_at_edge = true;
-                // reset_location(event.target);
+                // end animation
+                event.interaction.prepared = null;
+                event.interaction.stop();
+                event.interaction.inertiaStatus.active = false;
+                window.cancelAnimationFrame(event.interaction.inertiaStatus.i);
+
+                        deactivate_all_zones();
             }
         },
         // call this function on every dragend event

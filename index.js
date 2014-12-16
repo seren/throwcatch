@@ -55,6 +55,18 @@ function zoneTypeFromZone (zone) {
 
 // determines if the marker stopped over zone when thrown (unfortunately we have a bug
 //   when throwing over drop zones from forcing the inertia to end)
+function edge_zone_mapping (zone_list) {
+    for ( var zid = 0, len = zone_list.length; zid < len; zid++) {
+        z = zone_list[zid];
+        if ( z.classList.contains(which_edge_hit) && z.classList.contains("drop-active") ) {
+console.log('mapping: on zone "'+z.id+'"');
+            return zoneTypeFromZone(z);
+        }
+    }
+    return false;
+}
+
+
 function was_over_visible_zone (event) {
     x = event.x0 + event.dx;
     y = event.y0 + event.dy;

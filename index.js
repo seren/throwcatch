@@ -9,6 +9,8 @@ var last_active_zone = null;
 var active_icon = null;
 // used to prevent us from trying to end a drop multiple times
 var throw_at_edge = false;
+var which_edge_hit = null;
+
 
 function rotate (angle, target) {
     style = style + " rotate(" + angle + "deg)";
@@ -151,6 +153,7 @@ console.log('------------');
             justDroppedOnZone = false;
             thrown = false;
             throw_at_edge = false;
+            which_edge_hit = null;
             if ( target.classList.contains('marker') == true ) {
                 // store initial coordinates in case the throw-catch is canceled
                 target.originalMarkerX = (parseFloat(target.getAttribute('data-x')) || 0),
@@ -234,7 +237,12 @@ console.log('over visible zone: '+ zone);
 
 // detects if we hit the edge and caused the bounding restrictions to kick in
 function at_edge (event) {
-    if ( ( event.interaction.restrictStatus.dx != 0 ) || ( event.interaction.restrictStatus.dy != 0 ) ) {
+    // ugly hack since we can't detect dropzones during an interia passover
+    if ( event.interaction.restrictStatus.dx > 0 ) { which_edge_hit = "left"; }
+    if ( event.interaction.restrictStatus.dx < 0 ) { which_edge_hit = "right"; }
+    if ( event.interaction.restrictStatus.dy > 0 ) { which_edge_hit = "top"; }
+    if ( event.interaction.restrictStatus.dy < 0 ) { which_edge_hit = "bottom"; }
+    if ( which_edge_hit ) {
         return true;
     }
 }

@@ -11,6 +11,8 @@ var active_icon = null;
 // used to prevent us from trying to end a drop multiple times
 var throw_at_edge = false;
 var which_edge_hit = null;
+// track what the current view level is
+var current_folder_id = "none";
 
 
 function rotate_by_angle (angle, target) {
@@ -318,11 +320,15 @@ function turn_marker_to_icon (target) {
     target.classList.remove('marker');
     // in case this marker was has copy visual indicator
     target.classList.remove("icon-copy");
+    // update icon's parent folder value
+    parent_folder_id = get_parent_id( $('#'+target.id)[0] );
+    target.classList.remove('parent-'+parent_folder_id);
+    target.classList.add('parent-'+current_folder_id);
 }
 
 function deactivate_all_zones () {
 console.log('deactivate_all_zones');
-    divs = $('#basic-drag div')
+    divs = $('#basic-drag .dropzone')
     for ( var i = 0, len = divs.length; i < len; i++) {
         d=divs[i]
         d.classList.remove('drop-active');
@@ -412,20 +418,6 @@ interact('.copy-zone').dropzone({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function Velocity_History () {
     var self = this;
     var velocity_history_max_size = 8;
@@ -444,4 +436,79 @@ function Velocity_History () {
     self.truncate = function () {
         v.pop();
     }
+}
+
+
+
+////////////////////////
+// Folder switching
+
+
+
+interact('.icon')
+    .on('doubletap', function (event) {
+        switch_level(event.currentTarget.id);
+        event.preventDefault();
+    });
+
+interact('.nav-button')
+    .on('tap', function (event) {
+        navButtonAction(event.currentTarget.id);
+        event.preventDefault();
+    });
+
+function navButtonAction (button_name) {
+    var cases = {
+        back: function() {
+            if ( current_folder_id == "none" ) {
+                console.log("already at top folder");
+                alert("already at top folder");
+            } else {
+                console.log("up a level");
+                parent_folder_id = get_parent_id( $('#'+current_folder_id)[0] );
+                switch_level(parent_folder_id);
+                current_folder_id = parent_folder_id;
+            }
+        },
+        _default: function() { alert('nav-button name "'+name+'" is not a valid action'); }
+    };
+    cases[ button_name ] ? cases[ button_name ]() : cases._default();
+}
+
+
+function hide_all() {
+    $('.icon').each(function( num, icon ) {
+        icon.classList.add('icon-hidden');
+    });
+}
+
+
+function switch_level(parent_id) {
+    hide_all();
+console.log($('.parent-'+parent_id));
+    $('.parent-'+parent_id).each(function( num, icon ) {
+        icon.classList.remove('icon-hidden');
+    });
+    current_folder_id = parent_id;
+    if ( current_folder_id == "none" ) {
+        $('#back')[0].classList.add('nav-button-hidden');
+    } else {
+        $('#back')[0].classList.remove('nav-button-hidden');
+    }
+}
+
+
+function get_parent_id (child) {
+    var r = /parent-(.*)/;
+console.log(child);
+    classes = child.classList;
+    return class_from_class_list(classes, r);
+}
+
+
+
+function initLayout () {
+    console.log('Initializing layout');
+    hide_all();
+    switch_level('none');
 }

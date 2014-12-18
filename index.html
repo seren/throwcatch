@@ -5,10 +5,18 @@
 <script type="text/javascript" src="jquery-2.1.1.js"></script>
 <script type="text/javascript" src="jQueryRotate.js"></script>
 <script type="text/javascript" src="interact.js"></script>
+<script type="text/javascript" src="index.js"></script>
+
+<script type="text/javascript">
+window.onload = initLayout;
+</script>
 <body>
 <!--     <div id="readout"><span>Stuff goes here</span></div>
  -->
     <div id="basic-drag" class="demo-area">
+
+        <div id="back" class="nav-button"><img src="images/back-arrow.jpg" height="80" width="80"></div>
+
 
         <div class="dropzone left   marker-target cancel-zone drop-inactive" id="cancel1"><img src="images/cancel.png" width="46" height="46" alt="cancel dropzone"></div>
         <div class="dropzone right  marker-target cancel-zone drop-inactive" id="cancel2"><img src="images/cancel.png" width="46" height="46" alt="cancel dropzone"></div>
@@ -21,13 +29,17 @@
 
 
         <br><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <img src="images/folder-icon.png" class="draggable icon folder" id="bob1">
-                        <img src="images/text_file-icon.png" class="draggable icon file" id="file1">
-                        <img src="images/folder-icon.png" class="draggable icon folder" id="bob2">
+<!--                         <div class="draggable icon folder parent-none" id="bob1"><img src="images/folder-icon.png"></div> -->
+                        <img src="images/folder-icon.png" class="draggable icon folder parent-none" id="bob1">
+                        <img src="images/text_file-icon.png" class="draggable icon file parent-none" id="file1">
+                        <img src="images/folder-icon.png" class="draggable icon folder parent-none" id="bob2">
+
+                        <img src="images/text_file-icon.png" class="draggable icon file parent-bob1" id="subfile1">
+
+                        <img src="images/text_file-icon.png" class="draggable icon file parent-bob2" id="subfile2">
 
 
         </div>
 
-<script type="text/javascript" src="index.js"></script>
 </body>
 </html>

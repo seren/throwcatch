@@ -57,7 +57,7 @@
     border: dotted 2px;
 }
 
-.drop-inactive {
+.nav-button-hidden, .drop-inactive, .icon-hidden {
     display: hidden;
     visibility: hidden;
 }

@@ -122,6 +122,7 @@ function activate_zone_function (marker, zone_name) {
             old_img = $('#'+marker.id)[0]
             new_img = $('#'+marker.id).clone().appendTo('.demo-area');
             new_img[0].id = (new Date()).getTime().toString();
+            new_img[0].classList.add("icon-copy");
             reset_marker_location(old_img);
         },
         cancel: function() {
@@ -225,7 +226,6 @@ console.log('------------');
 
             // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame (there's an Interaction without a target being inertially processed)
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
-                event.target.classList.remove('over-dropzone');
                 zone = edge_zone_mapping ($('.dropzone'));
                 // zone = was_over_visible_zone_brute_force( event, $('.dropzone') );
 
@@ -260,7 +260,6 @@ console.log('------------');
         // call this function on every dragend event
         onend: function (event) {
             // remove styling in case it had been enabled
-            event.target.classList.remove('over-dropzone');
             zone = was_over_visible_zone( event );
             if ( zone ) {
                 console.log('end: over visible zone: '+ zone);
@@ -313,6 +312,8 @@ function turn_marker_to_icon (target) {
 // console.log(target);
     target.classList.add('icon');
     target.classList.remove('marker');
+    // in case this marker was has copy visual indicator
+    target.classList.remove("icon-copy");
 }
 
 function deactivate_all_zones () {
@@ -351,13 +352,11 @@ console.log("entered zone "+zoneTypeFromZone(event.target));
     var draggableElement = event.relatedTarget,
         dropzoneElement = event.target;
     dropzoneElement.classList.add('drop-target');
-    draggableElement.classList.add('over-dropzone');
     last_active_zone = dropzoneElement;
 }
 
 function genericOndragleave (event) {
     event.target.classList.remove('drop-target');
-    event.relatedTarget.classList.remove('over-dropzone');
 }
 
 function genericOndrop (event) {

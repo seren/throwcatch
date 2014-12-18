@@ -59,9 +59,13 @@ function reset_object_location (target, x, y) {
 function zoneTypeFromZone (zone) {
     var r = /(.*)-zone/;
     classes = zone.classList;
+    return class_from_class_list(classes, r);
+}
+
+function class_from_class_list (classes, regexp) {
     for (var i = 0, len = classes.length; i < len; i++) {
-        if ( r.test(classes[i]) ) {
-            zone_type = r.exec(classes[i])[1];
+        if ( regexp.test(classes[i]) ) {
+            zone_type = regexp.exec(classes[i])[1];
             return zone_type;
         }
     }

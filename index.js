@@ -13,11 +13,25 @@ var throw_at_edge = false;
 var which_edge_hit = null;
 
 
-function rotate (angle, target) {
+function rotate_by_angle (angle, target) {
     style = style + " rotate(" + angle + "deg)";
     target.style.webkitTransform =
     target.style.transform =
         style;
+}
+
+function rotate (target) {
+    if ( target.classList.contains('rotated') == false ) {
+        rotate_by_angle('90',target);
+        target.classList.add('rotated');
+    }
+}
+
+function unrotate (target) {
+    if ( target.classList.contains('rotated') ) {
+        rotate_by_angle('-90',target);
+        target.classList.remove('rotated');
+    }
 }
 
 
@@ -200,7 +214,7 @@ console.log('------------');
                velocity_history.add( target.speed.toFixed(1) );
             }
             if ( ( velocity_history.average() > toss_threshold ) || event.interaction.inertiaStatus.active ) {
-                rotate('90',target);
+                rotate(target );
             }
             target.style.webkitTransform =
             target.style.transform =
@@ -292,7 +306,7 @@ function turn_icon_to_marker (target) {
     target.classList.add('marker');
     target.classList.remove('icon');
     // make_marker_float(target); //todo
-    rotate('-90',target);
+    rotate(target);
 }
 
 function turn_marker_to_icon (target) {

@@ -47,6 +47,9 @@
   transition: background-color 0.3s, border-color 0.3s;
 }
 
+.rotated {
+  -webkit-transform:rotate(90deg);
+}
 
 .over-dropzone {
     border-color: #666;

@@ -460,8 +460,10 @@ function Velocity_History () {
 
 interact('.icon')
     .on('doubletap', function (event) {
-        switch_level(event.currentTarget.id);
-        event.preventDefault();
+        if ( event.currentTarget.classList.contains('folder') ) {
+            switch_level(event.currentTarget.id);
+            event.preventDefault();
+        }
     });
 
 interact('.nav-button')

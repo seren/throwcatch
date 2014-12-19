@@ -122,6 +122,9 @@ function activate_zone_function (marker, zone_name) {
         cancel: function() {
             console.log("canceling");
             turn_marker_to_icon_via_cancel(marker);
+            // if it's a copy, set sane defaults
+            rotation = '0';
+            apply_style(marker);
             reset_icon_location(marker);
         },
         delete: function() {
@@ -131,6 +134,7 @@ function activate_zone_function (marker, zone_name) {
             target.classList.remove('parent-'+parent_folder_id);
             target.classList.add('parent-trash-folder');
             // marker.style.display="none";
+            refresh_display();
         },
         _default: function() { alert('zone_name "'+zone_name+'" is not a valid name'); }
     };
@@ -208,7 +212,8 @@ console.log('------------');
             // set thrown flag if it's not already set and we're coasting
             if ( (thrown == false) && (event.interaction.inertiaStatus.active) ) { thrown = true; };
 
-            // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame (there's an Interaction without a target being inertially processed)
+            // todo: The method of aborting the inertia is causing errors in Interaction.inertiaFrame
+            //  (there's an Interaction without a target being inertially processed)
             if ( at_edge(event) && event.interaction.inertiaStatus.active ) {
                 zone = edge_zone_mapping ($('.dropzone'));
                 // zone = was_over_visible_zone_brute_force( event, $('.dropzone') );
@@ -239,6 +244,7 @@ console.log('------------');
                 rotation = '0';
             }
             apply_style(event.target);
+            refresh_display();
         },
         // call this function on every dragend event
         onend: function (event) {
@@ -259,6 +265,7 @@ console.log('------------');
             }
             rotation = '0';
             apply_style(event.target);
+            refresh_display();
             console.log('drag ended');
         }
     })
@@ -313,7 +320,7 @@ function turn_marker_to_icon_via_cancel (target) {
     // in case this marker has copy visual-indicator
     target.classList.remove("marker-copy");
     // refresh view in case marker came from another folder level
-    switch_level(current_folder_id);
+    refresh_display();
 }
 
 function deactivate_all_zones () {
@@ -481,9 +488,12 @@ function hide_all() {
 }
 
 
+function refresh_display() {
+    switch_level(current_folder_id);
+}
+
 function switch_level(parent_id) {
     hide_all();
-console.log($('.parent-'+parent_id));
     $('.parent-'+parent_id).each(function( num, icon ) {
         icon.classList.remove('icon-hidden');
     });
@@ -517,3 +527,4 @@ function initLayout () {
     hide_all();
     switch_level('none');
 }
+

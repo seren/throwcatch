@@ -144,19 +144,6 @@ function activate_zone_function (marker, zone_name) {
 
 
 
-
-
-
-// Todo: turn this into a weighted average, so that the most recent readings have more weight
-average_array = function (arr) {
-    sum=0; var i=arr.length; while(i--) sum += arr[i]
-    return Math.floor(sum/arr.length);
-}
-
-
-
-
-
 // target elements with the "draggable" class
 interact('.draggable')
     // enable inertial throwing
@@ -418,6 +405,12 @@ interact('.copy-zone').dropzone({
 
 
 
+
+// Todo: turn this into a weighted average, so that the most recent readings have more weight
+average_array = function (arr) {
+    sum=0; var i=arr.length; while(i--) sum += arr[i]
+    return Math.floor(sum/arr.length);
+}
 
 function Velocity_History () {
     var self = this;

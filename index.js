@@ -127,7 +127,10 @@ function activate_zone_function (marker, zone_name) {
         delete: function() {
             console.log("deleting");
             console.log(marker);
-            marker.style.display="none";
+            parent_folder_id = get_parent_id( $('#'+target.id)[0] );
+            target.classList.remove('parent-'+parent_folder_id);
+            target.classList.add('parent-trash-folder');
+            // marker.style.display="none";
         },
         _default: function() { alert('zone_name "'+zone_name+'" is not a valid name'); }
     };
@@ -490,12 +493,19 @@ console.log($('.parent-'+parent_id));
     } else {
         $('#back')[0].classList.remove('nav-button-hidden');
     }
+    if ( $('.parent-trash-folder').size() > 0 ) {
+        // console.log("TRASH FULL");
+        $('#trash-folder')[0].src = "images/trash-icon-full.png";
+    } else {
+        // console.log("TRASH EMPTY");
+        $('#trash-folder')[0].src = "images/trash-icon.png";
+    }
 }
 
 
 function get_parent_id (child) {
     var r = /parent-(.*)/;
-console.log(child);
+    // console.log(child);
     classes = child.classList;
     return class_from_class_list(classes, r);
 }

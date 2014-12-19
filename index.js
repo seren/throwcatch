@@ -136,7 +136,7 @@ function activate_zone_function (marker, zone_name) {
         },
         cancel: function() {
             console.log("canceling");
-            turn_marker_to_icon(marker);
+            turn_marker_to_icon_via_cancel(marker);
             reset_icon_location(marker);
         },
         delete: function() {
@@ -280,7 +280,7 @@ console.log('------------');
                 if ( event.target.classList.contains('marker') ) {
                     console.log('end: turning to icon:');
                     console.log(event.target);
-                    turn_marker_to_icon( event.target );
+                    turn_marker_to_icon_via_drop( event.target );
                 };
             }
             console.log('drag ended');
@@ -317,16 +317,26 @@ function turn_icon_to_marker (target) {
     rotate(target);
 }
 
-function turn_marker_to_icon (target) {
+function turn_marker_to_icon_via_drop (target) {
 // console.log(target);
     target.classList.add('icon');
     target.classList.remove('marker');
-    // in case this marker was has copy visual indicator
+    // in case this marker has copy visual-indicator
     target.classList.remove("icon-copy");
     // update icon's parent folder value
     parent_folder_id = get_parent_id( $('#'+target.id)[0] );
     target.classList.remove('parent-'+parent_folder_id);
     target.classList.add('parent-'+current_folder_id);
+}
+
+function turn_marker_to_icon_via_cancel (target) {
+// console.log(target);
+    target.classList.add('icon');
+    target.classList.remove('marker');
+    // in case this marker has copy visual-indicator
+    target.classList.remove("icon-copy");
+    // refresh view in case marker came from another folder level
+    switch_level(current_folder_id);
 }
 
 function deactivate_all_zones () {

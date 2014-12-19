@@ -420,7 +420,7 @@ function Velocity_History () {
     }
 
     self.add = function (x) {
-        v.push(x)
+        v.push(x);
         if ( v.length > velocity_history_max_size ) {
             v.shift();
         }

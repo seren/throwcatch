@@ -197,11 +197,10 @@ console.log('------------');
                velocity_history.add( target.speed.toFixed(1) );
             }
             if ( ( velocity_history.average() > toss_threshold ) || event.interaction.inertiaStatus.active ) {
-                rotate(target );
+                rotation = '90';
+            } else {
+                rotation = '0';
             }
-            target.style.webkitTransform =
-            target.style.transform =
-                style;
 
             // set thrown flag if it's not already set and we're coasting
             if ( (thrown == false) && (event.interaction.inertiaStatus.active) ) { thrown = true; };

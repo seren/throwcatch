@@ -124,12 +124,15 @@ function activate_zone_function (marker, zone_name) {
     globalaction = zone_name;
     var cases = {
         copy: function() {
-            console.log("copying");
-            old_img = $('#'+marker.id)[0]
-            new_img = $('#'+marker.id).clone().appendTo('.demo-area');
-            new_img[0].id = (new Date()).getTime().toString();
-            new_img[0].classList.add("icon-copy");
-            reset_marker_location(old_img);
+            // there was once a bug where icons could be copied. We couldn't reproduce it, so this is a safety check to make sure we only copy markers, not icons
+            if ( marker.classList.contains('marker') ) {
+                console.log("copying");
+                old_img = $('#'+marker.id)[0]
+                new_img = $('#'+marker.id).clone().appendTo('.demo-area');
+                new_img[0].id = (new Date()).getTime().toString();
+                new_img[0].classList.add("icon-copy");
+                reset_marker_location(old_img);
+            }
         },
         cancel: function() {
             console.log("canceling");

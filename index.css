@@ -24,7 +24,7 @@
 .top, .bottom {
   left: 0;
   right: 0;
-  height: 40px;
+  height: 50px;
   margin: 0px auto;
   }
 .top { top:0; }
@@ -47,7 +47,7 @@
   transition: background-color 0.3s, border-color 0.3s;
 }
 
-.icon-copy {
+.marker-copy {
     border-color: #666;
     border-radius: 14px;
     border: dotted 2px;
@@ -66,8 +66,8 @@
 .marker {
   width: 40;
   height: 40;
-  opacity: 0.5;
-  -webkit-filter: hue-rotate(210deg);
+  /*opacity: 0.8;*/
+  /*-webkit-filter: hue-rotate(210deg);*/
 }
 .icon {
   width: 80;

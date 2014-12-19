@@ -113,7 +113,7 @@ function activate_zone_function (marker, zone_name) {
                 old_img = $('#'+marker.id)[0]
                 new_img = $('#'+marker.id).clone().appendTo('.demo-area');
                 new_img[0].id = (new Date()).getTime().toString();
-                new_img[0].classList.add("icon-copy");
+                new_img[0].classList.add("marker-copy");
                 rotation = '0';
                 apply_style(new_img[0]);
                 reset_marker_location(old_img);
@@ -299,7 +299,7 @@ function turn_marker_to_icon_via_drop (target) {
     target.classList.add('icon');
     target.classList.remove('marker');
     // in case this marker has copy visual-indicator
-    target.classList.remove("icon-copy");
+    target.classList.remove("marker-copy");
     // update icon's parent folder value
     parent_folder_id = get_parent_id( $('#'+target.id)[0] );
     target.classList.remove('parent-'+parent_folder_id);
@@ -311,7 +311,7 @@ function turn_marker_to_icon_via_cancel (target) {
     target.classList.add('icon');
     target.classList.remove('marker');
     // in case this marker has copy visual-indicator
-    target.classList.remove("icon-copy");
+    target.classList.remove("marker-copy");
     // refresh view in case marker came from another folder level
     switch_level(current_folder_id);
 }

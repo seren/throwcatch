@@ -1748,18 +1748,18 @@
                 draggableElement = this.element,
                 drop = this.getDrop(dragEvent, draggableElement);
 
-console.log('-------');
-console.log(this);
+// console.log('-------');
+// console.log(this);
             this.dropTarget = drop.dropzone;
             this.dropElement = drop.element;
 
             var dropEvents = this.getDropEvents(event, dragEvent);
-console.log(dropEvents.move);
-console.log(this.dropTarget);
+// console.log(dropEvents.move);
+// console.log(this.dropTarget);
 var backup_dropTarget = this.dropTarget;
             target.fire(dragEvent);
 if ( this.dropTarget == null ) { this.dropTarget = backup_dropTarget; }
-console.log(this.dropTarget);
+// console.log(this.dropTarget);
 
             if (dropEvents.leave && this.prevDropTarget) { this.prevDropTarget.fire(dropEvents.leave); }
             if (dropEvents.enter) {     this.dropTarget.fire(dropEvents.enter); }

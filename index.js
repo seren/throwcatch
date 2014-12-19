@@ -13,29 +13,14 @@ var throw_at_edge = false;
 var which_edge_hit = null;
 // track what the current view level is
 var current_folder_id = "none";
+var rotation = "0";
+var translation = "";
 
-
-function rotate_by_angle (angle, target) {
-    style = style + " rotate(" + angle + "deg)";
+function apply_style (target) {
     target.style.webkitTransform =
     target.style.transform =
-        style;
+        translation + " rotate(" + rotation + "deg)";
 }
-
-function rotate (target) {
-    if ( target.classList.contains('rotated') == false ) {
-        rotate_by_angle('90',target);
-        target.classList.add('rotated');
-    }
-}
-
-function unrotate (target) {
-    if ( target.classList.contains('rotated') ) {
-        rotate_by_angle('-90',target);
-        target.classList.remove('rotated');
-    }
-}
-
 
 function reset_icon_location (target) {
     reset_object_location(target, target.originalIconX, target.originalIconY);
@@ -47,13 +32,11 @@ function reset_marker_location (target) {
     reset_object_location(target, target.originalMarkerX, target.originalMarkerY);
 }
 function reset_object_location (target, x, y) {
-
-    style = 'translate(' + x + 'px, ' + y + 'px)';
-    target.style.webkitTransform =
-    target.style.transform =
-        style;
     target.setAttribute('data-x',x);
     target.setAttribute('data-y',y);
+    translation = 'translate(' + x + 'px, ' + y + 'px)';
+    rotation = '0';
+    apply_style(target);
 }
 
 
@@ -131,6 +114,8 @@ function activate_zone_function (marker, zone_name) {
                 new_img = $('#'+marker.id).clone().appendTo('.demo-area');
                 new_img[0].id = (new Date()).getTime().toString();
                 new_img[0].classList.add("icon-copy");
+                rotation = '0';
+                apply_style(new_img[0]);
                 reset_marker_location(old_img);
             }
         },
@@ -188,6 +173,7 @@ interact('.draggable')
     .draggable({
         onstart: function (event) {
 console.log('------------');
+            rotation = "0";
             target = event.target;
             justDroppedOnZone = false;
             thrown = false;
@@ -214,7 +200,7 @@ console.log('------------');
                 y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 // console.log(x+','+y);
             // translate the element
-            style = 'translate(' + x + 'px, ' + y + 'px)';
+            translation = 'translate(' + x + 'px, ' + y + 'px) ';
 
             // update the position attributes
             target.setAttribute('data-x', x);
@@ -261,10 +247,9 @@ console.log('------------');
                         deactivate_all_zones();
 
                 console.log('move: drag ended');
+                rotation = '0';
             }
-
-
-
+            apply_style(event.target);
         },
         // call this function on every dragend event
         onend: function (event) {
@@ -283,6 +268,8 @@ console.log('------------');
                     turn_marker_to_icon_via_drop( event.target );
                 };
             }
+            rotation = '0';
+            apply_style(event.target);
             console.log('drag ended');
         }
     })
@@ -314,7 +301,8 @@ function turn_icon_to_marker (target) {
     target.classList.add('marker');
     target.classList.remove('icon');
     // make_marker_float(target); //todo
-    rotate(target);
+    rotation = '90';
+    apply_style(target);
 }
 
 function turn_marker_to_icon_via_drop (target) {
